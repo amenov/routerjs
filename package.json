@@ -1,0 +1,24 @@
+{
+  "name": "amenov.routerjs",
+  "version": "1.0.0",
+  "description": "amenov.routerjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amenov/routerjs.git"
+  },
+  "keywords": [
+    "express",
+    "router",
+    "parser"
+  ],
+  "author": "Amenov Abdulsalam <amenov.abdulsalam@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amenov/routerjs/issues"
+  },
+  "homepage": "https://github.com/amenov/routerjs#readme"
+}
