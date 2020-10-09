@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/amenov/routerjs/issues"
   },
-  "homepage": "https://github.com/amenov/routerjs#readme"
+  "homepage": "https://github.com/amenov/routerjs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

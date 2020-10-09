@@ -1,4 +1,6 @@
-module.exports = (router, routes, paths) => {
+const router = require("express").Router();
+
+module.exports = (routes, paths) => {
   const parser = (arr, parentUrl = "", parentMiddleware = []) => {
     arr.forEach((route) => {
       const url = parentUrl + route.url;
