@@ -16,7 +16,7 @@ module.exports = (router, routes, paths) => {
 
         const [controllerPath, controllerMethod] = route.controller.split(".");
 
-        const controller = require(paths.controller + controllerPath);
+        const controller = require(paths.controllers + controllerPath);
 
         router[method](url, ...middleware, controller[controllerMethod]);
       }
