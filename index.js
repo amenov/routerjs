@@ -1,16 +1,20 @@
 const router = require("express").Router();
 
 module.exports = (routes, paths) => {
-  const parser = (arr, parentUrl = "", parentMiddleware = []) => {
-    arr.forEach((route) => {
+  const parser = (routes, parentUrl = "", parentMiddleware = []) => {
+    routes.forEach((route) => {
       const url = parentUrl + route.url;
 
       const middleware = [...parentMiddleware];
 
-      if (route?.middleware?.length) {
-        route.middleware.forEach((middlewarePath) =>
-          middleware.push(require(paths.middleware + middlewarePath))
-        );
+      if (route.middleware) {
+        if (!Array.isArray(route.middleware)) {
+          route.middleware = route.middleware.split();
+        }
+
+        route.middleware.forEach((middlewarePath) => {
+          middleware.push(require(paths.middleware + middlewarePath));
+        });
       }
 
       if (route.method && route.controller) {
@@ -23,7 +27,9 @@ module.exports = (routes, paths) => {
         router[method](url, ...middleware, controller[controllerMethod]);
       }
 
-      if (route?.children?.length) parser(route.children, url, middleware);
+      if (route.children?.length) {
+        parser(route.children, url, middleware);
+      }
     });
   };
 
