@@ -3,7 +3,7 @@ const router = require("express").Router();
 module.exports = (routes, paths) => {
   const parser = (routes, parentUrl = "", parentMiddleware = []) => {
     routes.forEach((route) => {
-      const url = parentUrl + route.url ? route.url : "";
+      const url = parentUrl + (route.url ? route.url : "");
 
       const middleware = [...parentMiddleware];
 
