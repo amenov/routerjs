@@ -1,9 +1,9 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
 module.exports = (routes, paths) => {
-  const parser = (routes, parentUrl = "", parentMiddleware = []) => {
+  const parser = (routes, parentUrl = '', parentMiddleware = []) => {
     routes.forEach((route) => {
-      const url = parentUrl + (route.url ? route.url : "");
+      const url = parentUrl + (route.url ? route.url : '');
 
       const middleware = [...parentMiddleware];
 
@@ -20,11 +20,15 @@ module.exports = (routes, paths) => {
       if (route.method && route.controller) {
         const method = route.method.toLowerCase();
 
-        const [controllerPath, controllerMethod] = route.controller.split(".");
+        const [controllerPath, controllerMethod] = route.controller.split('.');
 
         const controller = require(paths.controllers + controllerPath);
 
-        router[method](url, ...middleware, controller[controllerMethod]);
+        router[method](
+          url,
+          ...middleware,
+          controllerMethod ? controller[controllerMethod] : controller
+        );
       }
 
       if (route.children?.length) {
