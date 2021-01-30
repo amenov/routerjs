@@ -15,7 +15,7 @@ module.exports = (routes, paths) => {
       };
 
       const requireMiddleware = (path) => {
-        require(paths.middleware + '/' + path);
+        return require(paths.middleware + '/' + path);
       };
 
       const routeMiddleware = route.middleware;
