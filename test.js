@@ -4,17 +4,18 @@ const app = express();
 
 const test = require('./index');
 
+const testMiddleware = require('./middleware/test');
+
 const routes = [
   {
     method: 'GET',
     url: '/test',
-    middleware: 'test',
+    middleware: testMiddleware,
     controller: 'test.controller',
     children: [
       {
         method: 'GET',
         url: '/children',
-        middleware: 'test',
         controller: 'test.controller',
       },
     ],

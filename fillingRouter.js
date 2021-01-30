@@ -2,38 +2,22 @@ const express = require('express');
 
 const Router = express.Router();
 
-const checkType = (val, Type) => val.constructor === Type;
-
 module.exports = (routes, paths) => {
   const recursiveFilling = (routes, parentUrl = '', parentMiddleware = []) => {
     for (const route of routes) {
       const url = parentUrl + (route.url ?? '');
       const middleware = [...parentMiddleware];
 
-      const pushMiddleware = (handler) => {
-        middleware.push(handler);
-      };
-
-      const requireMiddleware = (path) => {
-        const handler = require(paths.middleware + '/' + path);
-
-        return handler;
-      };
-
       if (route.middleware) {
-        const handlers = [];
-
-        if (!checkType(route.middleware, Array)) {
-          handlers.push(route.middleware);
-        } else {
-          handlers.push(...route.middleware);
-        }
+        const handlers = Array.isArray(route.middleware)
+          ? route.middleware
+          : [route.middleware];
 
         for (const handler of handlers) {
-          if (checkType(handler, String)) {
-            pushMiddleware(requireMiddleware(handler));
-          } else if (checkType(handler, Function)) {
-            pushMiddleware(handler);
+          if (typeof handler === 'string') {
+            middleware.push(require(paths.middleware + '/' + handler));
+          } else if (typeof handler === 'function') {
+            middleware.push(handler);
           }
         }
       }
