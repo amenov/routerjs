@@ -8,6 +8,7 @@ module.exports = (routes, paths) => {
   const recursiveFilling = (routes, prevUrl = '', prevMiddleware = []) => {
     for (const route of routes) {
       prevUrl = prevUrl + (route.url ?? '');
+
       prevMiddleware = [...prevMiddleware];
 
       const pushPrevMiddleware = (middleware) => {
