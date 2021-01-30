@@ -2,7 +2,7 @@ const express = require('express');
 
 const Router = express.Router();
 
-const checkType = (val, Type) => val.__proto__ === Type.prototype;
+const checkType = (val, Type) => val.constructor === Type;
 
 module.exports = (routes, paths) => {
   const recursiveFilling = (routes, parentUrl = '', parentMiddleware = []) => {
@@ -20,18 +20,20 @@ module.exports = (routes, paths) => {
         return handler;
       };
 
-      const routeMiddleware = route.middleware;
+      if (route.middleware) {
+        const handlers = [];
 
-      if (routeMiddleware) {
-        if (checkType(routeMiddleware, String)) {
-          pushMiddleware(requireMiddleware(routeMiddleware));
-        } else if (checkType(routeMiddleware, Array)) {
-          for (const handler of routeMiddleware) {
-            if (checkType(handler, String)) {
-              pushMiddleware(requireMiddleware(handler));
-            } else if (checkType(handler, Function)) {
-              pushMiddleware(handler);
-            }
+        if (!checkType(route.middleware, Array)) {
+          handlers.push(route.middleware);
+        } else {
+          handlers.push(...route.middleware);
+        }
+
+        for (const handler of handlers) {
+          if (checkType(handler, String)) {
+            pushMiddleware(requireMiddleware(handler));
+          } else if (checkType(handler, Function)) {
+            pushMiddleware(handler);
           }
         }
       }
@@ -49,10 +51,8 @@ module.exports = (routes, paths) => {
         );
       }
 
-      const routeChildren = route.children;
-
-      if (routeChildren?.length) {
-        recursiveFilling(routeChildren, url, middleware);
+      if (route.children?.length) {
+        recursiveFilling(route.children, url, middleware);
       }
     }
   };
