@@ -7,9 +7,31 @@ const test = require('./index');
 const routes = [
   {
     method: 'GET',
-    url: '/',
+    url: '/test',
     middleware: 'test',
     controller: 'test.controller',
+    children: [
+      {
+        method: 'GET',
+        url: '/children',
+        middleware: 'test',
+        controller: 'test.controller',
+      },
+    ],
+  },
+  {
+    method: 'GET',
+    url: '/test-2',
+    middleware: 'test',
+    controller: 'test.controller',
+    children: [
+      {
+        method: 'GET',
+        url: '/children',
+        middleware: 'test',
+        controller: 'test.controller',
+      },
+    ],
   },
 ];
 
